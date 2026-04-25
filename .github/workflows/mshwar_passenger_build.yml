@@ -35,10 +35,17 @@ jobs:
           cd mshwar_passenger
           flutter pub get
 
+      - name: Create local.properties
+        run: |
+          cd mshwar_passenger/android
+          echo "flutter.sdk=$FLUTTER_ROOT" > local.properties
+
       - name: Build APK
         run: |
           cd mshwar_passenger
           flutter build apk --release
+        env:
+          MAPBOX_DOWNLOADS_TOKEN: ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
