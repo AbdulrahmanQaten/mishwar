@@ -8,29 +8,9 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
-    project.evaluationDependsOn(":app")
-    
-    if (project.state.executed) {
-        configureAndroidProject(project)
-    } else {
-        project.afterEvaluate {
-            configureAndroidProject(it)
-        }
-    }
 }
-
-def configureAndroidProject(project) {
-    if (project.hasProperty('android')) {
-        project.android {
-            compileSdk = 35
-            buildToolsVersion = "35.0.0"
-            if (project.android.hasProperty('defaultConfig')) {
-                project.android.defaultConfig {
-                    targetSdk = 35
-                }
-            }
-        }
-    }
+subprojects {
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {
