@@ -13,26 +13,11 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-subprojects {
-    project.afterEvaluate {
-        if (project.hasProperty('android')) {
-            project.android {
-                if (namespace == null) {
-                    namespace = project.group
-                }
-                compileSdk = 35
-                buildToolsVersion = "35.0.0"
-                defaultConfig {
-                    if (targetSdk == null) {
-                        targetSdk = 35
-                    }
-                    if (minSdk == null) {
-                        minSdk = 21
-                    }
-                }
-            }
-        }
-    }
+// Fallback properties for plugins that fail to read them from the Flutter extension
+rootProject.ext {
+    compileSdkVersion = 35
+    targetSdkVersion = 35
+    minSdkVersion = 21
 }
 
 tasks.register("clean", Delete) {

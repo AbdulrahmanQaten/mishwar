@@ -43,12 +43,14 @@ jobs:
           echo "flutter.compileSdkVersion=35" >> local.properties
           echo "flutter.targetSdkVersion=35" >> local.properties
           echo "flutter.minSdkVersion=21" >> local.properties
-          cat local.properties
 
       - name: Build APK
         run: |
           cd mshwar_passenger
-          flutter build apk --release
+          flutter build apk --release \
+            -PcompileSdkVersion=35 \
+            -PtargetSdkVersion=35 \
+            -PminSdkVersion=21
         env:
           MAPBOX_DOWNLOADS_TOKEN: ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
 
