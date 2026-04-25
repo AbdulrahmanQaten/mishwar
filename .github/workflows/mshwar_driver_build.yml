@@ -38,7 +38,8 @@ jobs:
       - name: Create local.properties
         run: |
           cd mshwar_driver/android
-          echo "flutter.sdk=$FLUTTER_ROOT" > local.properties
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "flutter.sdk=$FLUTTER_HOME" >> local.properties
 
       - name: Build APK
         run: |
