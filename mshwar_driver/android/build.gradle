@@ -13,11 +13,14 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// Fallback properties for plugins that fail to read them from the Flutter extension
-rootProject.ext {
-    compileSdkVersion = 35
-    targetSdkVersion = 35
-    minSdkVersion = 21
+// THE FIX: Manually inject the 'flutter' object into all subprojects
+// This satisfies plugins like geolocator that look for flutter.compileSdkVersion
+subprojects {
+    ext.flutter = [
+        compileSdkVersion: 35,
+        targetSdkVersion: 35,
+        minSdkVersion: 21
+    ]
 }
 
 tasks.register("clean", Delete) {

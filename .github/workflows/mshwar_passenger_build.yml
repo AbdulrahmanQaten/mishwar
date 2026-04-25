@@ -39,18 +39,19 @@ jobs:
         run: |
           cd mshwar_passenger/android
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
-          echo "flutter.sdk=$(flutter sdk-path)" >> local.properties
+          echo "flutter.sdk=$FLUTTER_ROOT" >> local.properties
           echo "flutter.compileSdkVersion=35" >> local.properties
           echo "flutter.targetSdkVersion=35" >> local.properties
           echo "flutter.minSdkVersion=21" >> local.properties
+          # Also inject into gradle.properties for extra safety
+          echo "flutter.compileSdkVersion=35" >> gradle.properties
+          echo "flutter.targetSdkVersion=35" >> gradle.properties
+          echo "flutter.minSdkVersion=21" >> gradle.properties
 
       - name: Build APK
         run: |
           cd mshwar_passenger
-          flutter build apk --release \
-            -PcompileSdkVersion=35 \
-            -PtargetSdkVersion=35 \
-            -PminSdkVersion=21
+          flutter build apk --release
         env:
           MAPBOX_DOWNLOADS_TOKEN: ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
 
