@@ -1,0 +1,47 @@
+name: Build Driver APK
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'mshwar_driver/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'mshwar_driver/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: 'stable'
+
+      - name: Get Dependencies
+        run: |
+          cd mshwar_driver
+          flutter pub get
+
+      - name: Build APK
+        run: |
+          cd mshwar_driver
+          flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: driver-apk
+          path: mshwar_driver/build/app/outputs/flutter-apk/app-release.apk

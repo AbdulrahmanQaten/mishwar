@@ -1,0 +1,47 @@
+name: Build Passenger APK
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'mshwar_passenger/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'mshwar_passenger/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.5'
+          channel: 'stable'
+
+      - name: Get Dependencies
+        run: |
+          cd mshwar_passenger
+          flutter pub get
+
+      - name: Build APK
+        run: |
+          cd mshwar_passenger
+          flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: passenger-apk
+          path: mshwar_passenger/build/app/outputs/flutter-apk/app-release.apk
