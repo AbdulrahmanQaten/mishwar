@@ -6,6 +6,7 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_notifier.dart';
 import 'features/auth/presentation/screens/onboarding_screen.dart';
 
+// Triggering GitHub Actions
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
