@@ -1,4 +1,4 @@
-name: Build Passenger AAB
+name: Build Passenger Package
 
 on:
   push:
@@ -47,12 +47,19 @@ jobs:
           echo "flutter.targetSdkVersion=35" >> gradle.properties
           echo "flutter.minSdkVersion=21" >> gradle.properties
 
-      - name: Build App Bundle
+      - name: Build APK & AAB
         run: |
           cd mshwar_passenger
+          flutter build apk --release
           flutter build appbundle --release
         env:
           MAPBOX_DOWNLOADS_TOKEN: ${{ secrets.MAPBOX_DOWNLOADS_TOKEN }}
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: passenger-apk
+          path: mshwar_passenger/build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload AAB
         uses: actions/upload-artifact@v4
